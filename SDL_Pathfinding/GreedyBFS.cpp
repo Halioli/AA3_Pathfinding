@@ -14,27 +14,43 @@ void GreedyBFS::FindPath(Agent* monke, float dt)
 void GreedyBFS::PutStartingNodeToFrontier(Node* startingNode)
 {
 	frontier.push(startingNode);
-	cameFrom.push_back(startingNode);
+	cameFrom[startingNode] = NULL;
 }
 
 void GreedyBFS::GreedyBFSAlgorithm(PathFindingGraph* graph)
 {
+	int _lowestPriority = 9999;
+	int _nextNodeIndex = -1;
+
 	while (!frontier.empty())
 	{
 		current = frontier.top();
 		if (current == goal) break;
 
-		for (int next = 0; next < current->neighbours.size(); next++)
+		for (int index = 0; index < current->neighbours.size(); index++)
 		{
-			if (!cameFrom.at(next))
+			if (!cameFrom[current->neighbours[index]])
 			{
-				priority = Heuristic(goal, current->neighbours);
-				frontier.push(current->neighbours[next]);
+				for (auto element : current->neighbours)
+				{
+					// No estem comprovant si ja hi ha elements a la frontera.
+
+					priority = Heuristic(goal, element);
+
+					if (priority < _lowestPriority)
+					{
+						_lowestPriority = priority;
+						_nextNodeIndex = index;
+					}
+
+					frontier.push(current->neighbours[index]);
+				}
 				
-				// Not sure
-				current = cameFrom[current->neighbours[next]];
+				cameFrom[current->neighbours[index]] = current;
 			}
 		}
+
+		current = cameFrom[current->neighbours[_nextNodeIndex]];
 	}
 }
 

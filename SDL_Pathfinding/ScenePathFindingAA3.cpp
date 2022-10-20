@@ -56,11 +56,15 @@ void ScenePathFindingAA3::update(float dtime, SDL_Event* event)
 	case SDL_KEYDOWN:
 		if (event->key.keysym.scancode == SDL_SCANCODE_SPACE)
 			draw_grid = !draw_grid;
+		if (event->key.keysym.scancode == SDL_SCANCODE_G)
+			// call greddyBFS
+			// O creem una escena per cada algorisme, o en una mateixa escena canviem d'algorisme.
 		break;
+
 	case SDL_MOUSEMOTION:
 	case SDL_MOUSEBUTTONDOWN:
-
 		break;
+
 	default:
 		break;
 	}

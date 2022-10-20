@@ -4,13 +4,14 @@
 #include "Node.h"
 #include <queue>
 #include <stack>
+#include <map>
 
 class GreedyBFS : PathFindingAlgorithm
 {	
 public:
 	//FIFO
 	std::priority_queue<Node*> frontier;
-	std::vector<Node*> cameFrom;
+	std::map<Node*, Node*> cameFrom;
 
 	int priority;
 
@@ -23,6 +24,7 @@ public:
 
 	void FindPath(Agent* monke, float dt) override;
 	float Heuristic(Node* goal, Node* curr);
+	void Heuristic() override {};
 	void PutStartingNodeToFrontier(Node* startingNode);
 	void GreedyBFSAlgorithm(PathFindingGraph* graph);
 };

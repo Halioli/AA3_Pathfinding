@@ -1,5 +1,6 @@
 #pragma once
 #include <list>
+#include <vector>
 #include "Vector2D.h"
 
 class Node 
@@ -12,7 +13,7 @@ private:
 	~Node();
 
 public:
-	std::list<Node*> neighbours;
+	std::vector<Node*> neighbours;
 
 	Node(Vector2D pos, int _weight = 0);
 
