@@ -17,24 +17,33 @@ void GreedyBFS::PutStartingNodeToFrontier(Node* startingNode)
 	cameFrom[startingNode] = NULL;
 }
 
+void GreedyBFS::SetGoalPosition(Vector2D coinPos)
+{
+	goal->SetPos(coinPos);
+}
+
 void GreedyBFS::GreedyBFSAlgorithm(PathFindingGraph* graph)
 {
 	int _lowestPriority = 9999;
 	int _nextNodeIndex = -1;
 
+	current = startingNode;
+
 	while (!frontier.empty())
 	{
 		current = frontier.top();
-		if (current == goal) break;
+		if (current == goal)
+		{
+			startingNode = current;
+			break;
+		}
 
 		for (int index = 0; index < current->neighbours.size(); index++)
 		{
-			if (!cameFrom[current->neighbours[index]])
+			for (auto element : current->neighbours)
 			{
-				for (auto element : current->neighbours)
+				if (!cameFrom[current->neighbours[index]])
 				{
-					// No estem comprovant si ja hi ha elements a la frontera.
-
 					priority = Heuristic(goal, element);
 
 					if (priority < _lowestPriority)
@@ -44,14 +53,15 @@ void GreedyBFS::GreedyBFSAlgorithm(PathFindingGraph* graph)
 					}
 
 					frontier.push(current->neighbours[index]);
+
+					cameFrom[current->neighbours[index]] = current;
 				}
-				
-				cameFrom[current->neighbours[index]] = current;
 			}
 		}
-
+		pathToGoal.push_back(current);
 		current = cameFrom[current->neighbours[_nextNodeIndex]];
 	}
+
 }
 
 float GreedyBFS::Heuristic(Node* goal, Node* curr)

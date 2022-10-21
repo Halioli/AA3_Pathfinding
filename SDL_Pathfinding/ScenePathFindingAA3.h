@@ -35,4 +35,6 @@ class ScenePathFindingAA3 : public Scene
 		SDL_Texture* coin_texture;
 		bool loadTextures(char* filename_bg, char* filename_coin);
 
+		GreedyBFS* greddyBFS;
+		PathFindingGraph* graph;
 };

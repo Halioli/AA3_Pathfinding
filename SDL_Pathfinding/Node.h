@@ -19,7 +19,10 @@ public:
 
 	void SetWeight(int _weight) { weight = _weight; }
 	int GetWeight() { return weight; }
-	void SetPos(Vector2D pos) { position = pos; }
+	void SetPos(Vector2D pos)
+	{
+		position = pos;
+	}
 	Vector2D GetPos() { return position; }
 };
 

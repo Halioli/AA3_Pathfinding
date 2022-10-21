@@ -12,6 +12,7 @@ public:
 	//FIFO
 	std::priority_queue<Node*> frontier;
 	std::map<Node*, Node*> cameFrom;
+	std::vector<Node*> pathToGoal;
 
 	int priority;
 
@@ -26,5 +27,6 @@ public:
 	float Heuristic(Node* goal, Node* curr);
 	void Heuristic() override {};
 	void PutStartingNodeToFrontier(Node* startingNode);
+	void SetGoalPosition(Vector2D coinPos);
 	void GreedyBFSAlgorithm(PathFindingGraph* graph);
 };
