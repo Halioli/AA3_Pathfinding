@@ -134,7 +134,7 @@
     <ClCompile Include="Agent.cpp" />
     <ClCompile Include="AStar.cpp" />
     <ClCompile Include="CompositeWeightedSum.cpp" />
-    <ClCompile Include="DFS.cpp" />
+    <ClCompile Include="BFS.cpp" />
     <ClCompile Include="Dijkstra.cpp" />
     <ClCompile Include="Flee.cpp" />
     <ClCompile Include="Flocking.cpp" />
@@ -156,7 +156,7 @@
     <ClInclude Include="Agent.h" />
     <ClInclude Include="AStar.h" />
     <ClInclude Include="CompositeWeightedSum.h" />
-    <ClInclude Include="DFS.h" />
+    <ClInclude Include="BFS.h" />
     <ClInclude Include="Dijkstra.h" />
     <ClInclude Include="Flee.h" />
     <ClInclude Include="Flocking.h" />

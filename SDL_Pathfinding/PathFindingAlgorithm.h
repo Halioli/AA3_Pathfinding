@@ -6,6 +6,8 @@
 class PathFindingAlgorithm
 {
 	public:
+	
+
 		PathFindingAlgorithm() {};
 		~PathFindingAlgorithm() {};
 

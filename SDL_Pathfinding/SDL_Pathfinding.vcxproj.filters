@@ -51,7 +51,7 @@
     <ClCompile Include="PathFindingAlgorithm.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DFS.cpp">
+    <ClCompile Include="BFS.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="AStar.cpp">
@@ -119,7 +119,7 @@
     <ClInclude Include="PathFindingAlgorithm.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DFS.h">
+    <ClInclude Include="BFS.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="AStar.h">
