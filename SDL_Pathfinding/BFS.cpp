@@ -3,7 +3,9 @@
 
 BFS::BFS()
 {
-
+	current = new Node(Vector2D(0.0f, 0.0f), 0.0f);
+	goal = new Node(Vector2D(0.0f, 0.0f), 0.0f);
+	startingNode = new Node(Vector2D(0.0f, 0.0f), 0.0f);
 }
 
 void BFS::FindPath(Agent* agent, float dt)
@@ -32,6 +34,11 @@ void BFS::PutStartingNodeToFrontier(Node* startingNode)
 {
 	frontier.push(startingNode);
 	cameFrom[startingNode] = NULL;
+}
+
+void BFS::SetGoalPosition(Vector2D coinPos)
+{
+	goal->SetPos(coinPos);
 }
 
 void BFS::RestorePath()

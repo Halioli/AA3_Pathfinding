@@ -11,6 +11,7 @@
 #include "PathFollowing.h"
 #include "Grid.h"
 #include "PathFindingGraph.h"
+#include "BFS.h"
 #include "GreedyBFS.h"
 
 class ScenePathFindingAA3 : public Scene
@@ -35,6 +36,7 @@ class ScenePathFindingAA3 : public Scene
 		SDL_Texture* coin_texture;
 		bool loadTextures(char* filename_bg, char* filename_coin);
 
+		BFS* breathFirstSearch;
 		GreedyBFS* greddyBFS;
 		PathFindingGraph* graph;
 };

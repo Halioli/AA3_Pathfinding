@@ -9,7 +9,7 @@ public:
 	PathFindingGraph(int cellWidth, int cellHeight);
 	~PathFindingGraph();
 
-	std::vector<Node*> allNodes;
+	std::vector<std::vector<Node*>> allNodes;
 
 	Node* GetNodeByPosition(Vector2D cellPos);
 };

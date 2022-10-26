@@ -10,6 +10,8 @@ ScenePathFindingAA3::ScenePathFindingAA3()
 
 	//All nodes set
 	graph = new PathFindingGraph(maze->getNumCellX(), maze->getNumCellY());
+
+	breathFirstSearch = new BFS();
 	greddyBFS = new GreedyBFS();
 	
 	loadTextures("../res/maze.png", "../res/coin.png");
@@ -28,8 +30,8 @@ ScenePathFindingAA3::ScenePathFindingAA3()
 		rand_cell = Vector2D((float)(rand() % maze->getNumCellX()), (float)(rand() % maze->getNumCellY()));
 	agents[0]->setPosition(maze->cell2pix(rand_cell));
 	
-	greddyBFS->PutStartingNodeToFrontier(graph->GetNodeByPosition(maze->pix2cell(agents[0]->getPosition())));
-	greddyBFS->SetGoalPosition(coinPosition);
+	//greddyBFS->PutStartingNodeToFrontier(graph->GetNodeByPosition(maze->pix2cell(agents[0]->getPosition())));
+	//greddyBFS->SetGoalPosition(coinPosition); // Peta aquí!!!
 
 	// set the coin in a random cell (but at least 3 cells far from the agent)
 	coinPosition = Vector2D(-1, -1);
@@ -57,15 +59,33 @@ void ScenePathFindingAA3::update(float dtime, SDL_Event* event)
 	case SDL_KEYDOWN:
 		if (event->key.keysym.scancode == SDL_SCANCODE_SPACE)
 			draw_grid = !draw_grid;
-		if (event->key.keysym.scancode == SDL_SCANCODE_G)
+		else if (event->key.keysym.scancode == SDL_SCANCODE_G)
 		{
 			// call greddyBFS
 			// O creem una escena per cada algorisme, o en una mateixa escena canviem d'algorisme.
 			greddyBFS->PutStartingNodeToFrontier(graph->GetNodeByPosition(maze->pix2cell(agents[0]->getPosition())));
 			greddyBFS->SetGoalPosition(coinPosition);
 
+			greddyBFS->GreedyBFSAlgorithm(graph);
+
 			//agents[0]->addPathPoint //<-- add each path node here transformed into cell2pix(cell)
 			for (auto point : greddyBFS->pathToGoal)
+			{
+				for (int i = 0; i < (int)agents.size(); i++)
+				{
+					agents[i]->addPathPoint(point->GetPos());
+				}
+			}
+		}
+		else if (event->key.keysym.scancode == SDL_SCANCODE_B)
+		{
+			// call BFS
+			breathFirstSearch->PutStartingNodeToFrontier(graph->GetNodeByPosition(maze->pix2cell(agents[0]->getPosition())));
+			breathFirstSearch->SetGoalPosition(coinPosition);
+
+			breathFirstSearch->BFSAlgorithm(graph);
+
+			for (auto point: breathFirstSearch->pathToGoal)
 			{
 				for (int i = 0; i < (int)agents.size(); i++)
 				{

@@ -3,7 +3,9 @@
 
 GreedyBFS::GreedyBFS() 
 {
-	
+	current = new Node(Vector2D(0.0f, 0.0f), 0.0f);
+	goal = new Node(Vector2D(0.0f, 0.0f), 0.0f);
+	startingNode = new Node(Vector2D(0.0f, 0.0f), 0.0f);
 }
 
 void GreedyBFS::FindPath(Agent* monke, float dt)
@@ -32,30 +34,39 @@ void GreedyBFS::GreedyBFSAlgorithm(PathFindingGraph* graph)
 	while (!frontier.empty())
 	{
 		current = frontier.top();
-		if (current == goal)
+		if (current->GetPos() == goal->GetPos())
 		{
 			startingNode = current;
-			break;
+			return;
 		}
+
+		std::cout << "Current x: " << current->GetPos().x << std::endl;
+		std::cout << "Current y: " << current->GetPos().y << std::endl;
+		std::cout << "Goal x: " << goal->GetPos().x << std::endl;
+		std::cout << "Goal y: " << goal->GetPos().y << std::endl;
 
 		for (int index = 0; index < current->neighbours.size(); index++)
 		{
-			for (auto element : current->neighbours)
+			std::cout << "Neighbour" << index << " x: " << current->neighbours[index]->GetPos().x << std::endl;
+			std::cout << "Neighbour" << index << " y: " << current->neighbours[index]->GetPos().y << std::endl;
+
+			if (!cameFrom[current->neighbours[index]])
 			{
-				if (!cameFrom[current->neighbours[index]])
+				priority = Heuristic(goal, current->neighbours[index]);
+
+				if (priority < _lowestPriority)
 				{
-					priority = Heuristic(goal, element);
-
-					if (priority < _lowestPriority)
-					{
-						_lowestPriority = priority;
-						_nextNodeIndex = index;
-					}
-
-					frontier.push(current->neighbours[index]);
-
-					cameFrom[current->neighbours[index]] = current;
+					_lowestPriority = priority;
+					_nextNodeIndex = index;
 				}
+
+				frontier.push(current->neighbours[index]);
+
+				cameFrom[current->neighbours[index]] = current;
+			}
+			else
+			{
+				// Do something
 			}
 		}
 		pathToGoal.push_back(current);
