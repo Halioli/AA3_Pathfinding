@@ -5,12 +5,21 @@
 #include <queue>
 #include <stack>
 #include <map>
+#include <algorithm>
 
 class GreedyBFS : PathFindingAlgorithm
 {	
 public:
+	struct CompareNodes
+	{
+		bool operator()(Node* a, Node* b)
+		{
+			return ((a->GetWeight()) < (b->GetWeight()));
+		}
+	};
+
 	//FIFO
-	std::priority_queue<Node*> frontier;
+	std::priority_queue<Node*, std::vector<Node*>, CompareNodes> frontier;
 	std::map<Node*, Node*> cameFrom;
 	std::vector<Node*> pathToGoal;
 

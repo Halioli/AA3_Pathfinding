@@ -8,16 +8,16 @@ class Node
 private:
 	Vector2D position;
 
-	int weight;
+	float weight;
 
 	~Node();
 
 public:
 	std::vector<Node*> neighbours;
 
-	Node(Vector2D pos, int _weight = 0);
+	Node(Vector2D pos, float _weight = 0);
 
-	void SetWeight(int _weight) { weight = _weight; }
+	void SetWeight(float _weight) { weight = _weight; }
 	int GetWeight() { return weight; }
 	void SetPos(Vector2D pos)
 	{
