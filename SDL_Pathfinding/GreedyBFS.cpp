@@ -26,30 +26,26 @@ void GreedyBFS::SetGoalPosition(Vector2D coinPos)
 
 void GreedyBFS::GreedyBFSAlgorithm(PathFindingGraph* graph)
 {
+	cameFrom.clear();
+	pathToGoal.clear();
+
 	//int _lowestPriority = 9999;
+
+	std::priority_queue<Node*, std::vector<Node*>, CompareNodes> tempFrontier;
+	tempFrontier.push(startingNode);
+	cameFrom[startingNode] = NULL;
 
 	current = startingNode;
 
-	while (!frontier.empty())
+	while (!tempFrontier.empty())
 	{
-		current = frontier.top();
-		frontier.pop();
+		current = tempFrontier.top();
+		tempFrontier.pop();
 		if (current->GetPos() == goal->GetPos())
-		{
-			//startingNode = current;
 			break;
-		}
-
-		std::cout << "Current x: " << current->GetPos().x << std::endl;
-		std::cout << "Current y: " << current->GetPos().y << std::endl;
-		std::cout << "Goal x: " << goal->GetPos().x << std::endl;
-		std::cout << "Goal y: " << goal->GetPos().y << std::endl;
 
 		for (int index = 0; index < current->neighbours.size(); index++)
 		{
-			std::cout << "Neighbour" << index << " x: " << current->neighbours[index]->GetPos().x << std::endl;
-			std::cout << "Neighbour" << index << " y: " << current->neighbours[index]->GetPos().y << std::endl;
-
 			if (cameFrom.find(current->neighbours[index]) == cameFrom.end())
 			{
 				priority = Heuristic(goal, current->neighbours[index]);
@@ -59,14 +55,9 @@ void GreedyBFS::GreedyBFSAlgorithm(PathFindingGraph* graph)
 
 				current->neighbours[index]->SetWeight(priority);
 
-				frontier.push(current->neighbours[index]); // S'hauria d'estar ordenant de forma automàtica (gràcies a l'operador(Tomeu))
+				tempFrontier.push(current->neighbours[index]); // S'hauria d'estar ordenant de forma automàtica (gràcies a l'operador(Tomeu))
 
 				cameFrom[current->neighbours[index]] = current;
-			}
-			else
-			{
-				// Do something
-				std::cout << "AAAAAAAAAAAAAAAAAAAAAAAAAAAAA" << std::endl;
 			}
 		}
 	}
@@ -79,16 +70,14 @@ void GreedyBFS::GreedyBFSAlgorithm(PathFindingGraph* graph)
 	path.append(start) # optional
 	path.reverse() # optional*/
 
-	current = goal;
 	pathToGoal.push_back(current);
-	std::cout << "current.x: " << current->GetPos().x << " starting.x: " << startingNode->GetPos().x << std::endl;
-	std::cout << "current.y: " << current->GetPos().y << " starting.y: " << startingNode->GetPos().y << std::endl;
-	while (current->GetPos() != startingNode->GetPos()) // PETA pk el punter apunta a un lloc que no esta en mem (null ptr exception)
-	{
+
+	while (current && (current->GetPos() != startingNode->GetPos())) // Es queda en aquest While infinitament (don't fucking know why, bitch)
+	{																	// Va "back and forth" entre dos nodes, tota l'estona.
 		current = cameFrom[current];
 		pathToGoal.push_back(current);
-		std::cout << "EEEEEEEEEEEEEEEEEEEEEEEEEEEEE" << std::endl;
 	}
+
 	pathToGoal.push_back(startingNode);
 	std::reverse(pathToGoal.begin(), pathToGoal.end());
 }

@@ -3,35 +3,33 @@
 
 PathFindingGraph::PathFindingGraph(int cellWidth, int cellHeight)
 {
-	std::vector<Node*> row;
-
+	allNodes.resize(cellHeight);
 	// Initialize NODES
-	for (int i = 0; i < cellWidth; i++)
+	for (int i = 0; i < cellHeight; i++)
 	{
-		for (int j = 0; j < cellHeight; j++)
+		allNodes[i] = std::vector<Node*>(cellWidth);
+		for (int j = 0; j < cellWidth; j++)
 		{
-			row.push_back(new Node(Vector2D(i, j), 0.f));
+			allNodes[i][j] = new Node(Vector2D(j, i), 0.f);
 		}
-		allNodes.push_back(row);
-		row.clear();
 	}
 
 	// Initialize NEIGHBOURS
-	for (int i = 0; i < cellWidth; i++)
+	for (int i = 0; i < cellHeight; i++)
 	{
-		for (int j = 0; j < cellHeight; j++)
+		for (int j = 0; j < cellWidth; j++)
 		{
-			if (!(i + 1 >= cellWidth))
-				(*allNodes[i][j]).neighbours.push_back(allNodes[i + 1][j]);
+			if (!(i + 1 >= cellHeight))
+				(allNodes[i][j])->neighbours.push_back(allNodes[i + 1][j]);
 
 			if (!(i - 1 <= 0))
-				(*allNodes[i][j]).neighbours.push_back(allNodes[i - 1][j]);
+				(allNodes[i][j])->neighbours.push_back(allNodes[i - 1][j]);
 
-			if (!(j + 1 >= cellHeight))
-				(*allNodes[i][j]).neighbours.push_back(allNodes[i][j + 1]);
+			if (!(j + 1 >= cellWidth))
+				(allNodes[i][j])->neighbours.push_back(allNodes[i][j + 1]);
 
 			if (!(j - 1 <= 0))
-				(*allNodes[i][j]).neighbours.push_back(allNodes[i][j - 1]);
+				(allNodes[i][j])->neighbours.push_back(allNodes[i][j - 1]);
 		}
 	}
 }

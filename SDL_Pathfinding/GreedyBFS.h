@@ -14,7 +14,7 @@ public:
 	{
 		bool operator()(Node* a, Node* b)
 		{
-			return ((a->GetWeight()) < (b->GetWeight()));
+			return ((a->GetWeight()) > (b->GetWeight()));
 		}
 	};
 

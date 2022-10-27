@@ -10,12 +10,13 @@ private:
 
 	float weight;
 
-	~Node();
 
 public:
 	std::vector<Node*> neighbours;
 
 	Node(Vector2D pos, float _weight = 0);
+	~Node();
+
 
 	void SetWeight(float _weight) { weight = _weight; }
 	int GetWeight() { return weight; }
@@ -23,6 +24,9 @@ public:
 	{
 		position = pos;
 	}
-	Vector2D GetPos() { return position; }
+	Vector2D GetPos()
+	{ 
+		return position;
+	}
 };
 
