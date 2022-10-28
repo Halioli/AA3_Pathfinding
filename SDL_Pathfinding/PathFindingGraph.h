@@ -2,11 +2,12 @@
 #include <vector>
 #include "Node.h"
 #include "Vector2D.h"
+#include "Grid.h"
 
 class PathFindingGraph
 {
 public:
-	PathFindingGraph(int cellWidth, int cellHeight);
+	PathFindingGraph(int cellWidth, int cellHeight, Grid* _maze);
 	~PathFindingGraph();
 
 	std::vector<std::vector<Node*>> allNodes;

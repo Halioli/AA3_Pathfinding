@@ -1,7 +1,7 @@
 #pragma once
 #include "PathFindingGraph.h"
 
-PathFindingGraph::PathFindingGraph(int cellWidth, int cellHeight)
+PathFindingGraph::PathFindingGraph(int cellWidth, int cellHeight, Grid* _maze)
 {
 	allNodes.resize(cellHeight);
 	// Initialize NODES
@@ -19,16 +19,18 @@ PathFindingGraph::PathFindingGraph(int cellWidth, int cellHeight)
 	{
 		for (int j = 0; j < cellWidth; j++)
 		{
-			if (!(i + 1 >= cellHeight))
+			//_maze->isValidCell() // Checks if the Vector2D isn't a wall
+
+			if (!(i + 1 >= cellHeight) && _maze->isValidCell(allNodes[i + 1][j]->GetPos()))
 				(allNodes[i][j])->neighbours.push_back(allNodes[i + 1][j]);
 
-			if (!(i - 1 <= 0))
+			if (!(i - 1 <= 0) && _maze->isValidCell(allNodes[i - 1][j]->GetPos()))
 				(allNodes[i][j])->neighbours.push_back(allNodes[i - 1][j]);
 
-			if (!(j + 1 >= cellWidth))
+			if (!(j + 1 >= cellWidth) && _maze->isValidCell(allNodes[i][j + 1]->GetPos()))
 				(allNodes[i][j])->neighbours.push_back(allNodes[i][j + 1]);
 
-			if (!(j - 1 <= 0))
+			if (!(j - 1 <= 0) && _maze->isValidCell(allNodes[i][j - 1]->GetPos()))
 				(allNodes[i][j])->neighbours.push_back(allNodes[i][j - 1]);
 		}
 	}

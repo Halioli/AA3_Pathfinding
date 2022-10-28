@@ -9,6 +9,14 @@ class BFS : public PathFindingAlgorithm
 		BFS();
 		~BFS();
 
+		struct CompareNodes
+		{
+			bool operator()(Node* a, Node* b)
+			{
+				return ((a->GetWeight()) > (b->GetWeight()));
+			}
+		};
+
 		std::priority_queue<Node*> frontier;
 		std::map<Node*, Node*> cameFrom;
 		std::vector<Node*> pathToGoal;

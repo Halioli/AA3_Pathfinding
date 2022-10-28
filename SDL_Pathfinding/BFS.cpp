@@ -15,18 +15,29 @@ void BFS::FindPath(Agent* agent, float dt)
 
 void BFS::BFSAlgorithm(PathFindingGraph* graph)
 {
-	while (!frontier.empty())
+	cameFrom.clear();
+	pathToGoal.clear();
+
+	std::queue<Node*> tempFrontier;
+	tempFrontier.push(startingNode);
+	cameFrom[startingNode] = NULL;
+
+	current = startingNode;
+
+	while (!tempFrontier.empty())
 	{
-		current = frontier.top();
-		if (current == goal) break;
+		current = tempFrontier.front();
+		tempFrontier.pop();
+		if (current->GetPos() == goal->GetPos()) 
+			break;
 
 		for (int i = 0; i < current->neighbours.size(); i++)
 		{
-			if (!cameFrom[current->neighbours[i]])
+			if (cameFrom.find(current->neighbours[i]) == cameFrom.end())
 			{
-				frontier.push(current->neighbours[i]);
+				tempFrontier.push(current->neighbours[i]);
+
 				cameFrom[current->neighbours[i]] = current;
-				std::cout << "a" << std::endl;
 			}
 		}
 	}
@@ -41,20 +52,14 @@ void BFS::BFSAlgorithm(PathFindingGraph* graph)
 
 	pathToGoal.push_back(current);
 
-	while (current && (current->GetPos() != startingNode->GetPos())) // Es queda en aquest While infinitament (don't fucking know why, bitch)
-	{																	// Va "back and forth" entre dos nodes, tota l'estona.
+	while (current && (current->GetPos() != startingNode->GetPos()))
+	{
 		current = cameFrom[current];
 		pathToGoal.push_back(current);
 	}
 
 	pathToGoal.push_back(startingNode);
 	std::reverse(pathToGoal.begin(), pathToGoal.end());
-
-	// Netejar frontera
-	for (int i = 0; i < frontier.size(); i++)
-	{
-		frontier.pop();
-	}
 }
 
 void BFS::PutStartingNodeToFrontier(Node* startingNode)

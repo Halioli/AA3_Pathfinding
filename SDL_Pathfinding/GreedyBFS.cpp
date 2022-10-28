@@ -29,8 +29,6 @@ void GreedyBFS::GreedyBFSAlgorithm(PathFindingGraph* graph)
 	cameFrom.clear();
 	pathToGoal.clear();
 
-	//int _lowestPriority = 9999;
-
 	std::priority_queue<Node*, std::vector<Node*>, CompareNodes> tempFrontier;
 	tempFrontier.push(startingNode);
 	cameFrom[startingNode] = NULL;
@@ -72,8 +70,8 @@ void GreedyBFS::GreedyBFSAlgorithm(PathFindingGraph* graph)
 
 	pathToGoal.push_back(current);
 
-	while (current && (current->GetPos() != startingNode->GetPos())) // Es queda en aquest While infinitament (don't fucking know why, bitch)
-	{																	// Va "back and forth" entre dos nodes, tota l'estona.
+	while (current && (current->GetPos() != startingNode->GetPos()))
+	{
 		current = cameFrom[current];
 		pathToGoal.push_back(current);
 	}
