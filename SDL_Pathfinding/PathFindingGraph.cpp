@@ -10,7 +10,7 @@ PathFindingGraph::PathFindingGraph(int cellWidth, int cellHeight, Grid* _maze)
 		allNodes[i] = std::vector<Node*>(cellWidth);
 		for (int j = 0; j < cellWidth; j++)
 		{
-			allNodes[i][j] = new Node(Vector2D(j, i), 0.f);
+			allNodes[i][j] = new Node(Vector2D(j, i), 1.f);
 		}
 	}
 

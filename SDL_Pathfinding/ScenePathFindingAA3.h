@@ -13,6 +13,7 @@
 #include "PathFindingGraph.h"
 #include "BFS.h"
 #include "GreedyBFS.h"
+#include "Dijkstra.h"
 
 class ScenePathFindingAA3 : public Scene
 {
@@ -37,6 +38,7 @@ class ScenePathFindingAA3 : public Scene
 		bool loadTextures(char* filename_bg, char* filename_coin);
 
 		BFS* breathFirstSearch;
-		GreedyBFS* greddyBFS;
+		GreedyBFS* greedyBFS;
+		Dijkstra* dijkstra;
 		PathFindingGraph* graph;
 };

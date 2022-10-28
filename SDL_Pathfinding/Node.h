@@ -9,7 +9,7 @@ private:
 	Vector2D position;
 
 	float weight;
-
+	float cost;
 
 public:
 	std::vector<Node*> neighbours;
@@ -28,5 +28,7 @@ public:
 	{ 
 		return position;
 	}
+	void SetCost(float _cost);
+	float GetCost();
 };
 

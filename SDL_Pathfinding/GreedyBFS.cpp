@@ -48,9 +48,6 @@ void GreedyBFS::GreedyBFSAlgorithm(PathFindingGraph* graph)
 			{
 				priority = Heuristic(goal, current->neighbours[index]);
 
-				/*if (priority < _lowestPriority)
-					_lowestPriority = priority;*/
-
 				current->neighbours[index]->SetWeight(priority);
 
 				tempFrontier.push(current->neighbours[index]); // S'hauria d'estar ordenant de forma automàtica (gràcies a l'operador(Tomeu))
@@ -83,7 +80,6 @@ void GreedyBFS::GreedyBFSAlgorithm(PathFindingGraph* graph)
 float GreedyBFS::Heuristic(Node* goal, Node* curr)
 {
 	// [h(n) = sqrt(pow(n.x - goal.x, 2) + pow(n.y - goal.y, 2))] EUCLIDEA!!!
-	std::priority_queue<Node*, std::vector<Node*>, CompareNodes> hFrontier = frontier;
 	float h;
 
 	return h = sqrt(pow(curr->GetPos().x - goal->GetPos().x, 2) + pow(curr->GetPos().y - goal->GetPos().y, 2));

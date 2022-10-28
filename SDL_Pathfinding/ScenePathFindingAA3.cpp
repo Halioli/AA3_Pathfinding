@@ -12,7 +12,8 @@ ScenePathFindingAA3::ScenePathFindingAA3()
 	graph = new PathFindingGraph(maze->getNumCellX(), maze->getNumCellY(), maze);
 
 	breathFirstSearch = new BFS();
-	greddyBFS = new GreedyBFS();
+	greedyBFS = new GreedyBFS();
+	dijkstra = new Dijkstra();
 	
 	loadTextures("../res/maze.png", "../res/coin.png");
 	
@@ -29,9 +30,6 @@ ScenePathFindingAA3::ScenePathFindingAA3()
 	while (!maze->isValidCell(rand_cell))
 		rand_cell = Vector2D((float)(rand() % maze->getNumCellX()), (float)(rand() % maze->getNumCellY()));
 	agents[0]->setPosition(maze->cell2pix(rand_cell));
-	
-	//greddyBFS->PutStartingNodeToFrontier(graph->GetNodeByPosition(maze->pix2cell(agents[0]->getPosition())));
-	//greddyBFS->SetGoalPosition(coinPosition); // Peta aquí!!!
 
 	// set the coin in a random cell (but at least 3 cells far from the agent)
 	coinPosition = Vector2D(-1, -1);
@@ -63,15 +61,15 @@ void ScenePathFindingAA3::update(float dtime, SDL_Event* event)
 		{
 			for (int i = 0; i < (int)agents.size(); i++)
 			{
-				// call greddyBFS
+				// call greedyBFS
 				// O creem una escena per cada algorisme, o en una mateixa escena canviem d'algorisme.
-				greddyBFS->startingNode = graph->GetNodeByPosition(maze->pix2cell(agents[i]->getPosition()));
-				greddyBFS->SetGoalPosition(coinPosition);
+				greedyBFS->startingNode = graph->GetNodeByPosition(maze->pix2cell(agents[i]->getPosition()));
+				greedyBFS->SetGoalPosition(coinPosition);
 
-				greddyBFS->GreedyBFSAlgorithm(graph);
+				greedyBFS->GreedyBFSAlgorithm(graph);
 
 				//agents[0]->addPathPoint //<-- add each path node here transformed into cell2pix(cell)
-				for (auto point : greddyBFS->pathToGoal)
+				for (auto point : greedyBFS->pathToGoal)
 				{
 					agents[i]->addPathPoint(maze->cell2pix(point->GetPos()));
 				}
@@ -95,10 +93,19 @@ void ScenePathFindingAA3::update(float dtime, SDL_Event* event)
 		}
 		else if (event->key.keysym.scancode == SDL_SCANCODE_D)
 		{
+			// == NEED TO ADD DIFERENT COSTS/WEIGHTS TO EACH NODE CONNECTION ==
 			for (int i = 0; i < (int)agents.size(); i++)
 			{
 				// call Dijkstra
+				dijkstra->startingNode = graph->GetNodeByPosition(maze->pix2cell(agents[i]->getPosition()));
+				dijkstra->SetGoalPosition(coinPosition);
 
+				dijkstra->DijkstraAlgorithm(graph);
+
+				for (auto point : dijkstra->pathToGoal)
+				{
+					agents[i]->addPathPoint(maze->cell2pix(point->GetPos()));
+				}
 			}
 		}
 			
