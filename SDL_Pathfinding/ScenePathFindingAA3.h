@@ -14,6 +14,7 @@
 #include "BFS.h"
 #include "GreedyBFS.h"
 #include "Dijkstra.h"
+#include "AStar.h"
 
 class ScenePathFindingAA3 : public Scene
 {
@@ -40,5 +41,6 @@ class ScenePathFindingAA3 : public Scene
 		BFS* breathFirstSearch;
 		GreedyBFS* greedyBFS;
 		Dijkstra* dijkstra;
+		AStar* aStar;
 		PathFindingGraph* graph;
 };

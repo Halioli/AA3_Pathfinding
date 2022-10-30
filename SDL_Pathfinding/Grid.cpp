@@ -17,8 +17,10 @@ Grid::Grid(char* filename)
 		vector<int> terrain_row;
 		std::stringstream lineStream(line);
 		std::string cell;
+		
 		while (std::getline(lineStream, cell, ','))
 			terrain_row.push_back(atoi(cell.c_str()));
+
 		SDL_assert(terrain_row.size() == num_cell_x);
 		terrain.push_back(terrain_row);
 	}

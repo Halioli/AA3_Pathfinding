@@ -14,6 +14,7 @@ ScenePathFindingAA3::ScenePathFindingAA3()
 	breathFirstSearch = new BFS();
 	greedyBFS = new GreedyBFS();
 	dijkstra = new Dijkstra();
+	aStar = new AStar();
 	
 	loadTextures("../res/maze.png", "../res/coin.png");
 	
@@ -103,6 +104,24 @@ void ScenePathFindingAA3::update(float dtime, SDL_Event* event)
 				dijkstra->DijkstraAlgorithm(graph);
 
 				for (auto point : dijkstra->pathToGoal)
+				{
+					agents[i]->addPathPoint(maze->cell2pix(point->GetPos()));
+				}
+			}
+		}
+		else if (event->key.keysym.scancode == SDL_SCANCODE_A)
+		{
+
+			// == NEED TO ADD DIFERENT COSTS/WEIGHTS TO EACH NODE CONNECTION ==
+			for (int i = 0; i < (int)agents.size(); i++)
+			{
+				// call Dijkstra
+				aStar->startingNode = graph->GetNodeByPosition(maze->pix2cell(agents[i]->getPosition()));
+				aStar->SetGoalPosition(coinPosition);
+
+				aStar->AStarAlgorithm(graph);
+
+				for (auto point : aStar->pathToGoal)
 				{
 					agents[i]->addPathPoint(maze->cell2pix(point->GetPos()));
 				}
