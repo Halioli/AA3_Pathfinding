@@ -53,89 +53,73 @@ ScenePathFindingAA3::~ScenePathFindingAA3()
 
 void ScenePathFindingAA3::update(float dtime, SDL_Event* event)
 {
+	if (_chooseAlgorithm)
+	{
+		_chooseAlgorithm = false;
+
+		switch (_currentAlgorithm)
+		{
+			case BREATHFS:
+				DoBFS();
+				break;
+
+			case GREEDY:
+				DoGreedyBFS();
+				break;
+
+			case DIJKSTRA:
+				DoDijkstra();
+				break;
+
+			case ASTAR:
+				DoAStar();
+				break;
+
+			case NONE:
+			default:
+				break;
+		}
+	}
+
 	/* Keyboard & Mouse events */
-	switch (event->type) {
-	case SDL_KEYDOWN:
-		if (event->key.keysym.scancode == SDL_SCANCODE_SPACE)
-			draw_grid = !draw_grid;
-		else if (event->key.keysym.scancode == SDL_SCANCODE_G)
-		{
-			for (int i = 0; i < (int)agents.size(); i++)
+	switch (event->type)
+	{
+		case SDL_KEYDOWN:
+			if (event->key.keysym.scancode == SDL_SCANCODE_SPACE)
+				draw_grid = !draw_grid;
+			else if (event->key.keysym.scancode == SDL_SCANCODE_G)
 			{
-				// call greedyBFS
-				// O creem una escena per cada algorisme, o en una mateixa escena canviem d'algorisme.
-				greedyBFS->startingNode = graph->GetNodeByPosition(maze->pix2cell(agents[i]->getPosition()));
-				greedyBFS->SetGoalPosition(coinPosition);
+				_currentAlgorithm = GREEDY;
 
-				greedyBFS->GreedyBFSAlgorithm(graph);
-
-				//agents[0]->addPathPoint //<-- add each path node here transformed into cell2pix(cell)
-				for (auto point : greedyBFS->pathToGoal)
-				{
-					agents[i]->addPathPoint(maze->cell2pix(point->GetPos()));
-				}
+				DoGreedyBFS();
 			}
-		}
-		else if (event->key.keysym.scancode == SDL_SCANCODE_B)
-		{
-			for (int i = 0; i < (int)agents.size(); i++)
+			else if (event->key.keysym.scancode == SDL_SCANCODE_B)
 			{
-				// call BFS
-				breathFirstSearch->startingNode = graph->GetNodeByPosition(maze->pix2cell(agents[i]->getPosition()));
-				breathFirstSearch->SetGoalPosition(coinPosition);
+				_currentAlgorithm = BREATHFS;
 
-				breathFirstSearch->BFSAlgorithm(graph);
-
-				for (auto point: breathFirstSearch->pathToGoal)
-				{
-					agents[i]->addPathPoint(maze->cell2pix(point->GetPos()));
-				}
+				DoBFS();
 			}
-		}
-		else if (event->key.keysym.scancode == SDL_SCANCODE_D)
-		{
-			// == NEED TO ADD DIFERENT COSTS/WEIGHTS TO EACH NODE CONNECTION ==
-			for (int i = 0; i < (int)agents.size(); i++)
+			else if (event->key.keysym.scancode == SDL_SCANCODE_D)
 			{
-				// call Dijkstra
-				dijkstra->startingNode = graph->GetNodeByPosition(maze->pix2cell(agents[i]->getPosition()));
-				dijkstra->SetGoalPosition(coinPosition);
+				_currentAlgorithm = DIJKSTRA;
 
-				dijkstra->DijkstraAlgorithm(graph);
-
-				for (auto point : dijkstra->pathToGoal)
-				{
-					agents[i]->addPathPoint(maze->cell2pix(point->GetPos()));
-				}
+				DoDijkstra();
 			}
-		}
-		else if (event->key.keysym.scancode == SDL_SCANCODE_A)
-		{
-
-			// == NEED TO ADD DIFERENT COSTS/WEIGHTS TO EACH NODE CONNECTION ==
-			for (int i = 0; i < (int)agents.size(); i++)
+			else if (event->key.keysym.scancode == SDL_SCANCODE_A)
 			{
-				// call Dijkstra
-				aStar->startingNode = graph->GetNodeByPosition(maze->pix2cell(agents[i]->getPosition()));
-				aStar->SetGoalPosition(coinPosition);
+				_currentAlgorithm = ASTAR;
 
-				aStar->AStarAlgorithm(graph);
-
-				for (auto point : aStar->pathToGoal)
-				{
-					agents[i]->addPathPoint(maze->cell2pix(point->GetPos()));
-				}
+				DoAStar();
 			}
-		}
 			
-		break;
+			break;
 
-	case SDL_MOUSEMOTION:
-	case SDL_MOUSEBUTTONDOWN:
-		break;
+		case SDL_MOUSEMOTION:
+		case SDL_MOUSEBUTTONDOWN:
+			break;
 
-	default:
-		break;
+		default:
+			break;
 	}
 
 	agents[0]->update(dtime, event);
@@ -146,8 +130,89 @@ void ScenePathFindingAA3::update(float dtime, SDL_Event* event)
 		coinPosition = Vector2D(-1, -1);
 		while ((!maze->isValidCell(coinPosition)) || (Vector2D::Distance(coinPosition, maze->pix2cell(agents[0]->getPosition())) < 3))
 			coinPosition = Vector2D((float)(rand() % maze->getNumCellX()), (float)(rand() % maze->getNumCellY()));
-	}
 
+		_chooseAlgorithm = true;
+	}
+}
+
+void ScenePathFindingAA3::DoAStar()
+{
+	agents[0]->clearPath();
+
+	// == NEED TO ADD DIFERENT COSTS/WEIGHTS TO EACH NODE CONNECTION ==
+	for (int i = 0; i < (int)agents.size(); i++)
+	{
+		// call A*
+		aStar->startingNode = graph->GetNodeByPosition(maze->pix2cell(agents[i]->getPosition()));
+		aStar->SetGoalPosition(coinPosition);
+
+		aStar->AStarAlgorithm(graph);
+
+		for (auto point : aStar->pathToGoal)
+		{
+			agents[i]->addPathPoint(maze->cell2pix(point->GetPos()));
+		}
+	}
+}
+
+void ScenePathFindingAA3::DoDijkstra()
+{
+	agents[0]->clearPath();
+
+	// == NEED TO ADD DIFERENT COSTS/WEIGHTS TO EACH NODE CONNECTION ==
+	for (int i = 0; i < (int)agents.size(); i++)
+	{
+		// call Dijkstra
+		dijkstra->startingNode = graph->GetNodeByPosition(maze->pix2cell(agents[i]->getPosition()));
+		dijkstra->SetGoalPosition(coinPosition);
+
+		dijkstra->DijkstraAlgorithm(graph);
+
+		for (auto point : dijkstra->pathToGoal)
+		{
+			agents[i]->addPathPoint(maze->cell2pix(point->GetPos()));
+		}
+	}
+}
+
+void ScenePathFindingAA3::DoBFS()
+{
+	agents[0]->clearPath();
+
+	for (int i = 0; i < (int)agents.size(); i++)
+	{
+		// call BFS
+		breathFirstSearch->startingNode = graph->GetNodeByPosition(maze->pix2cell(agents[i]->getPosition()));
+		breathFirstSearch->SetGoalPosition(coinPosition);
+
+		breathFirstSearch->BFSAlgorithm(graph);
+
+		for (auto point : breathFirstSearch->pathToGoal)
+		{
+			agents[i]->addPathPoint(maze->cell2pix(point->GetPos()));
+		}
+	}
+}
+
+void ScenePathFindingAA3::DoGreedyBFS()
+{
+	agents[0]->clearPath();
+
+	for (int i = 0; i < (int)agents.size(); i++)
+	{
+		// call greedyBFS
+		// O creem una escena per cada algorisme, o en una mateixa escena canviem d'algorisme.
+		greedyBFS->startingNode = graph->GetNodeByPosition(maze->pix2cell(agents[i]->getPosition()));
+		greedyBFS->SetGoalPosition(coinPosition);
+
+		greedyBFS->GreedyBFSAlgorithm(graph);
+
+		//agents[0]->addPathPoint //<-- add each path node here transformed into cell2pix(cell)
+		for (auto point : greedyBFS->pathToGoal)
+		{
+			agents[i]->addPathPoint(maze->cell2pix(point->GetPos()));
+		}
+	}
 }
 
 void ScenePathFindingAA3::draw()

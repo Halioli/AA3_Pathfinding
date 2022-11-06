@@ -22,10 +22,19 @@ class ScenePathFindingAA3 : public Scene
 		ScenePathFindingAA3();
 		~ScenePathFindingAA3();
 		void update(float dtime, SDL_Event* event);
+		void DoAStar();
+		void DoDijkstra();
+		void DoBFS();
+		void DoGreedyBFS();
 		void draw();
 		const char* getTitle();
 
 	private:
+		enum Algorithm { BREATHFS, GREEDY, DIJKSTRA, ASTAR, NONE };
+
+		Algorithm _currentAlgorithm = NONE;
+		bool _chooseAlgorithm = true;
+
 		std::vector<Agent*> agents;
 		Vector2D coinPosition;
 
