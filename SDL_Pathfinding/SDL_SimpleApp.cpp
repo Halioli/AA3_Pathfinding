@@ -53,7 +53,6 @@ SDL_SimpleApp::~SDL_SimpleApp()
 
 SDL_Event SDL_SimpleApp::run(Scene *scene)
 {
-
 	SDL_Event event;
 	SDL_PollEvent(&event);
 
@@ -69,7 +68,7 @@ SDL_Event SDL_SimpleApp::run(Scene *scene)
 	SDL_RenderClear(renderer);
 	if (dtime > MAX_DTIME) dtime = (float)MAX_DTIME;
 	scene->update(dtime,&event);
-	scene->draw();
+	scene->draw(); // DRAWW
 	SDL_RenderPresent(renderer);
 	return event;
 }

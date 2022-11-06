@@ -25,4 +25,5 @@ public:
 	bool isValidCell(Vector2D cell);
 	int getNumCellX();
 	int getNumCellY();
+	int getTerrainWeight(int i, int j);
 };

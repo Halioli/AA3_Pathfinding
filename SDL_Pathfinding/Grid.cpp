@@ -42,6 +42,11 @@ int Grid::getNumCellY()
 	return num_cell_y;
 }
 
+int Grid::getTerrainWeight(int i, int j)
+{
+	return terrain[i][j];
+}
+
 Vector2D Grid::cell2pix(Vector2D cell)
 {
 	int offset = CELL_SIZE / 2;
