@@ -26,11 +26,18 @@ ScenePathFindingAA3::ScenePathFindingAA3()
 	agent->setTarget(Vector2D(-20, -20));
 	agents.push_back(agent);
 
+	Agent* enemyAgent = new Agent;
+	enemyAgent->loadSpriteTexture("../res/zombie1.png", 8);
+	enemyAgent->setBehavior(new PathFollowing);
+	enemyAgent->setTarget(Vector2D(-20, -20));
+	enemyAgents.push_back(enemyAgent);
+
 	// set agent position coords to the center of a random cell
 	Vector2D rand_cell(-1, -1);
 	while (!maze->isValidCell(rand_cell))
 		rand_cell = Vector2D((float)(rand() % maze->getNumCellX()), (float)(rand() % maze->getNumCellY()));
 	agents[0]->setPosition(maze->cell2pix(rand_cell));
+	enemyAgents[0]->setPosition(maze->cell2pix(rand_cell));
 
 	// set the coin in a random cell (but at least 3 cells far from the agent)
 	coinPosition = Vector2D(-1, -1);
@@ -49,6 +56,9 @@ ScenePathFindingAA3::~ScenePathFindingAA3()
 	{
 		delete agents[i];
 	}
+
+	for (int i = 0; i < (int)enemyAgents.size(); i++)
+		delete enemyAgents[i];
 }
 
 void ScenePathFindingAA3::update(float dtime, SDL_Event* event)
@@ -123,6 +133,7 @@ void ScenePathFindingAA3::update(float dtime, SDL_Event* event)
 	}
 
 	agents[0]->update(dtime, event);
+	enemyAgents[0]->update(dtime, event);
 
 	// if we have arrived to the coin, replace it in a random cell!
 	if ((agents[0]->getCurrentTargetIndex() == -1) && (maze->pix2cell(agents[0]->getPosition()) == coinPosition))
@@ -132,6 +143,22 @@ void ScenePathFindingAA3::update(float dtime, SDL_Event* event)
 			coinPosition = Vector2D((float)(rand() % maze->getNumCellX()), (float)(rand() % maze->getNumCellY()));
 
 		_chooseAlgorithm = true;
+	}
+
+	// ENEMY
+	if ((enemyAgents[0]->getCurrentTargetIndex() == -1) && (maze->pix2cell(enemyAgents[0]->getPosition()) == enemyAgents[0]->getTarget()))
+	{
+		enemyAgents[0]->setTarget(Vector2D(-1, -1));
+		while ((!maze->isValidCell(enemyAgents[0]->getTarget())) || (Vector2D::Distance(enemyAgents[0]->getTarget(), maze->pix2cell(enemyAgents[0]->getPosition())) < 3))
+			enemyAgents[0]->setTarget(Vector2D((float)(rand() % maze->getNumCellX()), (float)(rand() % maze->getNumCellY())));
+
+		_didGreedy = false;
+	}
+
+	if (!_didGreedy)
+	{
+		DoGreedyBFS(enemyAgents);
+		_didGreedy = true;
 	}
 }
 
@@ -215,6 +242,27 @@ void ScenePathFindingAA3::DoGreedyBFS()
 	}
 }
 
+void ScenePathFindingAA3::DoGreedyBFS(std::vector<Agent*> _agents)
+{
+	for (int i = 0; i < (int)_agents.size(); i++)
+	{
+		_agents[i]->clearPath();
+
+		// call greedyBFS
+		// O creem una escena per cada algorisme, o en una mateixa escena canviem d'algorisme.
+		greedyBFS->startingNode = graph->GetNodeByPosition(maze->pix2cell(_agents[i]->getPosition()));
+		greedyBFS->SetGoalPosition(_agents[i]->getTarget());
+
+		greedyBFS->GreedyBFSAlgorithm(graph);
+
+		//agents[0]->addPathPoint //<-- add each path node here transformed into cell2pix(cell)
+		for (auto point : greedyBFS->pathToGoal)
+		{
+			_agents[i]->addPathPoint(maze->cell2pix(point->GetPos()));
+		}
+	}
+}
+
 void ScenePathFindingAA3::draw()
 {
 	drawMaze();
@@ -234,6 +282,7 @@ void ScenePathFindingAA3::draw()
 	}
 
 	agents[0]->draw();
+	enemyAgents[0]->draw();
 }
 
 const char* ScenePathFindingAA3::getTitle()

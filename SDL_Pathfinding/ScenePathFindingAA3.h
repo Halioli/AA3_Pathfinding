@@ -26,6 +26,7 @@ class ScenePathFindingAA3 : public Scene
 		void DoDijkstra();
 		void DoBFS();
 		void DoGreedyBFS();
+		void DoGreedyBFS(std::vector<Agent*> _agents);
 		void draw();
 		const char* getTitle();
 
@@ -34,8 +35,10 @@ class ScenePathFindingAA3 : public Scene
 
 		Algorithm _currentAlgorithm = NONE;
 		bool _chooseAlgorithm = true;
+		bool _didGreedy = false;
 
 		std::vector<Agent*> agents;
+		std::vector<Agent*> enemyAgents;
 		Vector2D coinPosition;
 
 		Grid* maze;
