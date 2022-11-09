@@ -80,7 +80,7 @@ void ScenePathFindingAA3::update(float dtime, SDL_Event* event)
 {
 	if (_chooseAlgorithm)
 	{
-		_chooseAlgorithm = false;
+		_chooseAlgorithm = false; // comment this if you want to test the greedy stuff
 
 		switch (_currentAlgorithm)
 		{
@@ -251,7 +251,7 @@ void ScenePathFindingAA3::DoGreedyBFS()
 		greedyBFS->startingNode = graph->GetNodeByPosition(maze->pix2cell(agents[i]->getPosition()));
 		greedyBFS->SetGoalPosition(coinPosition);
 
-		greedyBFS->GreedyBFSAlgorithm(graph);
+		greedyBFS->GreedyBFSAlgorithmWithEnemies(graph, enemyAgents, maze);
 
 		//agents[0]->addPathPoint //<-- add each path node here transformed into cell2pix(cell)
 		for (auto point : greedyBFS->pathToGoal)

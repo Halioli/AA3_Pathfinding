@@ -38,4 +38,5 @@ public:
 	void PutStartingNodeToFrontier(Node* startingNode);
 	void SetGoalPosition(Vector2D coinPos);
 	void GreedyBFSAlgorithm(PathFindingGraph* graph);
+	void GreedyBFSAlgorithmWithEnemies(PathFindingGraph* graph, std::vector<Agent*> _enemyAgents, Grid* _maze);
 };

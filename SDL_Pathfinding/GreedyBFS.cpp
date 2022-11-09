@@ -77,6 +77,56 @@ void GreedyBFS::GreedyBFSAlgorithm(PathFindingGraph* graph)
 	std::reverse(pathToGoal.begin(), pathToGoal.end());
 }
 
+void GreedyBFS::GreedyBFSAlgorithmWithEnemies(PathFindingGraph* graph, std::vector<Agent*> _enemyAgents, Grid* _maze)
+{
+	cameFrom.clear();
+	pathToGoal.clear();
+
+	std::priority_queue<Node*, std::vector<Node*>, CompareNodes> tempFrontier;
+	tempFrontier.push(startingNode);
+	cameFrom[startingNode] = NULL;
+
+	current = startingNode;
+
+	while (!tempFrontier.empty())
+	{
+		current = tempFrontier.top();
+		tempFrontier.pop();
+		if (current->GetPos() == goal->GetPos())
+			break;
+
+		for (int index = 0; index < current->neighbours.size(); index++)
+		{
+			if (cameFrom.find(current->neighbours[index]) == cameFrom.end())
+			{
+				priority = Heuristic(goal, current->neighbours[index]);
+					
+				for (int i = 0; i < _enemyAgents.size(); i++)
+				{
+					priority += (Heuristic(graph->GetNodeByPosition(_maze->pix2cell(_enemyAgents[i]->getPosition())), current->neighbours[index]));// *0.8f);
+				}
+
+				current->neighbours[index]->SetWeight(priority);
+
+				tempFrontier.push(current->neighbours[index]); // S'hauria d'estar ordenant de forma automàtica (gràcies a l'operador(Tomeu))
+
+				cameFrom[current->neighbours[index]] = current;
+			}
+		}
+	}
+
+	pathToGoal.push_back(current);
+
+	while (current && (current->GetPos() != startingNode->GetPos()))
+	{
+		current = cameFrom[current];
+		pathToGoal.push_back(current);
+	}
+
+	pathToGoal.push_back(startingNode);
+	std::reverse(pathToGoal.begin(), pathToGoal.end());
+}
+
 float GreedyBFS::Heuristic(Node* goal, Node* curr)
 {
 	// [h(n) = sqrt(pow(n.x - goal.x, 2) + pow(n.y - goal.y, 2))] EUCLIDEA!!!
