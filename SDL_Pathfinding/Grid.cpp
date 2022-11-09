@@ -14,7 +14,7 @@ Grid::Grid(char* filename)
 	std::string line;
 	while (std::getline(infile, line))
 	{
-		vector<int> terrain_row;
+		vector<float> terrain_row;
 		std::stringstream lineStream(line);
 		std::string cell;
 		

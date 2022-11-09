@@ -23,7 +23,7 @@ public:
 	std::vector<Node*> pathToGoal;
 	std::map<Node*, float> costSoFar;
 
-	int priority;
+	float priority;
 
 	Node* current;
 	Node* goal;

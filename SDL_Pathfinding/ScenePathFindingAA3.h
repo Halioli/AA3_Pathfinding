@@ -26,16 +26,17 @@ class ScenePathFindingAA3 : public Scene
 		void DoDijkstra();
 		void DoBFS();
 		void DoGreedyBFS();
-		void DoGreedyBFS(std::vector<Agent*> _agents);
+		void DoGreedyBFS(Agent* _agent);
 		void draw();
 		const char* getTitle();
 
 	private:
+		const int NUMBER_OF_ENEMIES = 2;
+
 		enum Algorithm { BREATHFS, GREEDY, DIJKSTRA, ASTAR, NONE };
 
 		Algorithm _currentAlgorithm = NONE;
 		bool _chooseAlgorithm = true;
-		bool _didGreedy = false;
 
 		std::vector<Agent*> agents;
 		std::vector<Agent*> enemyAgents;

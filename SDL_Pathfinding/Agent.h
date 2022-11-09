@@ -39,6 +39,8 @@ private:
 	int sprite_h;
 
 public:
+	bool calculatedAlgorithm = false;
+
 	Agent();
 	~Agent();
 	Vector2D getPosition();
