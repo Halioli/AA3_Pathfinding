@@ -18,7 +18,8 @@ ScenePathFindingAA3::ScenePathFindingAA3()
 	
 	loadTextures("../res/maze.png", "../res/coin.png");
 	
-	srand((unsigned int)time(NULL));
+	//srand((unsigned int)time(NULL));
+	srand(8);
 
 	Agent* agent = new Agent;
 	agent->loadSpriteTexture("../res/soldier.png", 4);

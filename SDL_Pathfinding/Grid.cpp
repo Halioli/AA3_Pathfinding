@@ -42,7 +42,7 @@ int Grid::getNumCellY()
 	return num_cell_y;
 }
 
-int Grid::getTerrainWeight(int i, int j)
+float Grid::getTerrainWeight(int i, int j)
 {
 	return terrain[i][j];
 }

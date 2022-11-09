@@ -17,7 +17,7 @@ private:
 	int num_cell_x;
 	int num_cell_y;
 
-	std::vector< std::vector<int> > terrain;
+	std::vector< std::vector<float> > terrain;
 
 public:
 	Vector2D cell2pix(Vector2D cell);
@@ -25,5 +25,5 @@ public:
 	bool isValidCell(Vector2D cell);
 	int getNumCellX();
 	int getNumCellY();
-	int getTerrainWeight(int i, int j);
+	float getTerrainWeight(int i, int j);
 };

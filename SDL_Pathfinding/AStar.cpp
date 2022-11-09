@@ -26,6 +26,8 @@ void AStar::SetGoalPosition(Vector2D coinPos)
 
 void AStar::AStarAlgorithm(PathFindingGraph* graph)
 {
+	int exploredNodes = 0;
+
 	costSoFar.clear();
 	cameFrom.clear();
 	pathToGoal.clear();
@@ -61,6 +63,8 @@ void AStar::AStarAlgorithm(PathFindingGraph* graph)
 
 					cameFrom[current->neighbours[index]] = current;
 				}
+
+				++exploredNodes;
 			}
 		}
 	}
@@ -77,4 +81,6 @@ void AStar::AStarAlgorithm(PathFindingGraph* graph)
 
 	pathToGoal.push_back(startingNode);
 	std::reverse(pathToGoal.begin(), pathToGoal.end());
+
+	std::cout << exploredNodes << std::endl;
 }
