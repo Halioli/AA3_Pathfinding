@@ -80,7 +80,7 @@ void ScenePathFindingAA3::update(float dtime, SDL_Event* event)
 {
 	if (_chooseAlgorithm)
 	{
-		_chooseAlgorithm = false; // comment this if you want to test the greedy stuff
+		//_chooseAlgorithm = false; // comment this if you want to test the greedy stuff
 
 		switch (_currentAlgorithm)
 		{
