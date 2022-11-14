@@ -100,14 +100,20 @@ void GreedyBFS::GreedyBFSAlgorithmWithEnemies(PathFindingGraph* graph, std::vect
 			if (cameFrom.find(current->neighbours[index]) == cameFrom.end())
 			{
 				priority = Heuristic(goal, current->neighbours[index]);
-					
+				
+				// --- Problem focus START: ---
 				for (int i = 0; i < _enemyAgents.size(); i++)
 				{
 					float result = Heuristic(current->neighbours[index], graph->GetNodeByPosition(_maze->pix2cell(_enemyAgents[i]->getPosition())));// *0.8f);
 
 					priority -= result;
-					if (priority < 0) { priority = 0; }
+
+					/*if (priority < 0)
+					{
+						priority = 0;
+					}*/
 				}
+				// --- Problem focus END: ---
 
 				current->neighbours[index]->SetWeight(priority);
 
