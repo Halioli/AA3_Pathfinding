@@ -26,7 +26,6 @@ SalesmanProblem::SalesmanProblem() // Done!
 	agents.push_back(agent);
 
 	Vector2D rand_cell(-1, -1);
-
 	// set agent position coords to the center of a random cell
 	while (!maze->isValidCell(rand_cell))
 		rand_cell = Vector2D((float)(rand() % maze->getNumCellX()), (float)(rand() % maze->getNumCellY()));
@@ -58,6 +57,8 @@ SalesmanProblem::~SalesmanProblem()
 
 void SalesmanProblem::update(float dtime, SDL_Event* event)
 {
+	++_timer;
+
 	/* Keyboard & Mouse events */
 	if (_timer % 100 == 0)
 	{
@@ -84,7 +85,11 @@ void SalesmanProblem::update(float dtime, SDL_Event* event)
 
 			DoGreedyBFS();
 		}
-
+		else if (event->key.keysym.scancode == SDL_SCANCODE_N)
+		{
+			// Usefull for when it gets stuck
+			_currentAlgorithm = NONE;
+		}
 		break;
 
 	case SDL_MOUSEMOTION:
@@ -97,26 +102,27 @@ void SalesmanProblem::update(float dtime, SDL_Event* event)
 
 	agents[0]->update(dtime, event);
 
-	if (maze->pix2cell(agents[0]->getPosition()) == coinPositions[targetCoin])
+	if (coinPositions.size() <= 0)
+	{
+		// Reset algorithm to avoid wierd things
+		_currentAlgorithm = NONE;
+
+		Vector2D rand_cell(-1, -1);
+		// Set the new coins in a random cell (but at least 3 cells far from the agent)
+		for (int i = 0; i < numberOfCoins; i++)
+		{
+			coinPositions.push_back(Vector2D(-1, -1));
+			while ((!maze->isValidCell(coinPositions[i])) || (Vector2D::Distance(coinPositions[i], rand_cell) < 3))
+				coinPositions[i] = Vector2D((float)(rand() % maze->getNumCellX()), (float)(rand() % maze->getNumCellY()));
+		}
+	}
+	else if (maze->pix2cell(agents[0]->getPosition()) == coinPositions[targetCoin])
 	{
 		coinPositions[targetCoin] = Vector2D(-1, -1);
+		coinPositions.erase(coinPositions.begin() + targetCoin); // Remove targetCoin from vector
 
 		targetCoin = greedyBFS->GetClosestPoint(coinPositions, agents[0], graph, maze); // Get by searching the nearest coin
 	}
-
-	// if we have arrived to the coin, replace it in a random cell!
-	/*for (int i = 0; i < coinPositions.size(); i++)
-	{
-		if ((agents[0]->getCurrentTargetIndex() == -1) && (maze->pix2cell(agents[0]->getPosition()) == coinPositions[i]))
-		{
-			coinPositions[i] = Vector2D(-1, -1);
-
-			while ((!maze->isValidCell(coinPositions[i])) || (Vector2D::Distance(coinPositions[i], maze->pix2cell(agents[0]->getPosition())) < 3))
-				coinPositions[i] = Vector2D((float)(rand() % maze->getNumCellX()), (float)(rand() % maze->getNumCellY()));
-
-			// clear coin i
-		}
-	}*/
 }
 
 void SalesmanProblem::DoGreedyBFS()

@@ -122,7 +122,11 @@ void ScenePathFindingAA3::update(float dtime, SDL_Event* event)
 				_numberOfEnemies = 2;
 				InitEnemies();
 			}
-
+			else if (event->key.keysym.scancode == SDL_SCANCODE_N)
+			{
+				// Usefull for when it gets stuck
+				_currentAlgorithm = NONE;
+			}
 			break;
 
 		case SDL_MOUSEMOTION:

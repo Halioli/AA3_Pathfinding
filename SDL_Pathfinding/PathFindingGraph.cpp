@@ -12,10 +12,10 @@ PathFindingGraph::PathFindingGraph(int cellWidth, int cellHeight, Grid* _maze)
 		{
 			allNodes[i][j] = new Node(Vector2D(j, i), _maze->getTerrainWeight(i, j)); // Need to check terrain value
 
-			if (_maze->getTerrainWeight(i, j) == 5)
-			{
-				std::cout << "This is working!" << std::endl;
-			}
+			//if (_maze->getTerrainWeight(i, j) == 5)
+			//{
+			//	std::cout << "This is working!" << std::endl;
+			//}
 		}
 	}
 

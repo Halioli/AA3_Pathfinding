@@ -146,7 +146,8 @@ int GreedyBFS::GetClosestPoint(std::vector<Vector2D> _points, Agent* _agent, Pat
 			break;
 		// --- End new: ---
 
-		float _heuristicValue = Heuristic(_graph->GetNodeByPosition(_maze->pix2cell(_points[i])), _graph->GetNodeByPosition(_maze->pix2cell(_agent->getPosition())));
+		float _heuristicValue = Heuristic(_graph->GetNodeByPosition(_maze->pix2cell(_agent->getPosition())), _graph->GetNodeByPosition(_maze->pix2cell(_points[i])));
+			//Heuristic(_graph->GetNodeByPosition(_maze->pix2cell(_points[i])), _graph->GetNodeByPosition(_maze->pix2cell(_agent->getPosition())));
 
 		if (_heuristicValue < lowestDist)
 		{
