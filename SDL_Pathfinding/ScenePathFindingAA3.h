@@ -19,6 +19,8 @@
 class ScenePathFindingAA3 : public Scene
 {
 	public:
+		int _numberOfEnemies = 0;
+
 		ScenePathFindingAA3();
 		~ScenePathFindingAA3();
 		void update(float dtime, SDL_Event* event);
@@ -27,11 +29,12 @@ class ScenePathFindingAA3 : public Scene
 		void DoBFS();
 		void DoGreedyBFS();
 		void DoGreedyBFS(Agent* _agent);
+		void InitEnemies();
 		void draw();
 		const char* getTitle();
 
 	private:
-		const int NUMBER_OF_ENEMIES = 2;
+		int _timer = 0;
 
 		enum Algorithm { BREATHFS, GREEDY, DIJKSTRA, ASTAR, NONE };
 

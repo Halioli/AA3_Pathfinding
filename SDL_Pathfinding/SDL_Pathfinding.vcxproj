@@ -145,6 +145,7 @@
     <ClCompile Include="Node.cpp" />
     <ClCompile Include="PathFindingGraph.cpp" />
     <ClCompile Include="PathFollowing.cpp" />
+    <ClCompile Include="SalesmanProblem.cpp" />
     <ClCompile Include="ScenePathFindingAA3.cpp" />
     <ClCompile Include="ScenePathFindingMouse.cpp" />
     <ClCompile Include="SDL_SimpleApp.cpp" />
@@ -167,6 +168,7 @@
     <ClInclude Include="Path.h" />
     <ClInclude Include="PathFindingGraph.h" />
     <ClInclude Include="PathFollowing.h" />
+    <ClInclude Include="SalesmanProblem.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="ScenePathFindingAA3.h" />
     <ClInclude Include="ScenePathFindingMouse.h" />

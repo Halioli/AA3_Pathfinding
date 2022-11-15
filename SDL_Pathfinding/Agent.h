@@ -61,6 +61,5 @@ public:
 	void clearPath();
 	void update(float dtime, SDL_Event *event);
 	void draw();
-	bool Agent::loadSpriteTexture(char* filename, int num_frames=1);
-	
+	bool loadSpriteTexture(char* filename, int num_frames = 1);
 };

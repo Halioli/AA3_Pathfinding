@@ -101,7 +101,6 @@ void GreedyBFS::GreedyBFSAlgorithmWithEnemies(PathFindingGraph* graph, std::vect
 			{
 				priority = Heuristic(goal, current->neighbours[index]);
 				
-				// --- Problem focus START: ---
 				for (int i = 0; i < _enemyAgents.size(); i++)
 				{
 					float result = Heuristic(current->neighbours[index], graph->GetNodeByPosition(_maze->pix2cell(_enemyAgents[i]->getPosition())));// *0.8f);
@@ -113,7 +112,6 @@ void GreedyBFS::GreedyBFSAlgorithmWithEnemies(PathFindingGraph* graph, std::vect
 						priority = 0;
 					}*/
 				}
-				// --- Problem focus END: ---
 
 				current->neighbours[index]->SetWeight(priority);
 
@@ -134,6 +132,30 @@ void GreedyBFS::GreedyBFSAlgorithmWithEnemies(PathFindingGraph* graph, std::vect
 
 	pathToGoal.push_back(startingNode);
 	std::reverse(pathToGoal.begin(), pathToGoal.end());
+}
+
+int GreedyBFS::GetClosestPoint(std::vector<Vector2D> _points, Agent* _agent, PathFindingGraph* _graph, Grid* _maze)
+{
+	float lowestDist = 99999;
+	int lowestDistanceCoinIndex = 0;
+
+	for (int i = 0; i < _points.size(); i++)
+	{
+		// --- Start new: --- // Això, en teoria, està ignorant les monedes que ja s'han recollit.
+		if (_points[i] == Vector2D(-1, -1))
+			break;
+		// --- End new: ---
+
+		float _heuristicValue = Heuristic(_graph->GetNodeByPosition(_maze->pix2cell(_points[i])), _graph->GetNodeByPosition(_maze->pix2cell(_agent->getPosition())));
+
+		if (_heuristicValue < lowestDist)
+		{
+			lowestDist = _heuristicValue;
+			lowestDistanceCoinIndex = i;
+		}
+	}
+
+	return lowestDistanceCoinIndex;
 }
 
 float GreedyBFS::Heuristic(Node* goal, Node* curr)

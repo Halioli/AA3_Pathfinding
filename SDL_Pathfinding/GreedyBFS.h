@@ -39,4 +39,5 @@ public:
 	void SetGoalPosition(Vector2D coinPos);
 	void GreedyBFSAlgorithm(PathFindingGraph* graph);
 	void GreedyBFSAlgorithmWithEnemies(PathFindingGraph* graph, std::vector<Agent*> _enemyAgents, Grid* _maze);
+	int GetClosestPoint(std::vector<Vector2D> _points, Agent* _agent, PathFindingGraph* _graph, Grid* _maze);
 };

@@ -34,5 +34,5 @@ public:
 	void Heuristic() override {};
 	void SetGoalPosition(Vector2D coinPos);
 	void AStarAlgorithm(PathFindingGraph* graph);
+	void AStarAlgorithmWithEnemies(PathFindingGraph* graph, std::vector<Agent*> _enemyAgents, Grid* _maze);
 };
-
