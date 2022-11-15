@@ -24,6 +24,7 @@ public:
 	std::map<Node*, float> costSoFar;
 
 	float priority;
+	float enemyAvoidanceWeight = 50; // Increase it to make the player avoid the enemies more
 
 	Node* current;
 	Node* goal;

@@ -126,7 +126,7 @@ void AStar::AStarAlgorithmWithEnemies(PathFindingGraph* graph, std::vector<Agent
 						result = 10 - result;
 						if (result < 0) { result = 0; }
 
-						priority += result * 50;
+						priority += result * enemyAvoidanceWeight;
 					}
 
 					current->neighbours[index]->SetCost(priority);
